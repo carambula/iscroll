@@ -104,6 +104,7 @@ var m = Math,
 			topOffset: 0,
 			checkDOMChanges: false,		// Experimental
 			handleClick: true,
+			centered: true,
 
 			// Scrollbar
 			hScrollbar: true,
@@ -646,7 +647,7 @@ iScroll.prototype = {
 			return;
 		}
 
-		that.scrollTo(resetX, resetY, time || 0);
+		if (!options.centered) { that.scrollTo(resetX, resetY, time || 0); }
 	},
 
 	_wheel: function (e) {
@@ -804,7 +805,8 @@ iScroll.prototype = {
 	_offset: function (el) {
 		var left = -el.offsetLeft,
 			top = -el.offsetTop;
-			
+			width = el.offsetWidth;
+
 		while (el = el.offsetParent) {
 			left -= el.offsetLeft;
 			top -= el.offsetTop;
@@ -812,6 +814,8 @@ iScroll.prototype = {
 		
 		if (el != this.wrapper) {
 			left *= this.scale;
+			if (this.options.centered) { left = left - (width/2); }
+			
 			top *= this.scale;
 		}
 
